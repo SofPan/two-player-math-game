@@ -32,7 +32,7 @@ class Game
       !is_correct ? current_player.lose_a_life : current_question = self.generate_question
       
       current_player.lives < 1 && self.game_won = true
-
+      puts @current_score
       self.current_player= other_player
       self.other_player= player_turn
     end
