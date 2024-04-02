@@ -20,21 +20,23 @@ class Game
   def game_loop
     current_question = generate_question
     until game_won
+      puts "It is #{current_player.name}'s turn. " + current_question
       player_turn = current_player
-      player_answer = gets.to_i
-      # For TESTING, remove later
+
+      player_answer = gets.chomp.to_i
+
       is_correct = player_answer == winning_answer
 
       puts "#{current_player.name}'s answer is #{player_answer}, they are #{is_correct ? "right!" : "totally wrong!"}"
 
-      !is_correct ? current_player.lose_a_life : self.generate_question
+      !is_correct ? current_player.lose_a_life : current_question = self.generate_question
       
       current_player.lives < 1 && self.game_won = true
 
       self.current_player= other_player
       self.other_player= player_turn
     end
-    # For TESTING, remove later
-    puts "exiting game loop"
+    puts "#{current_player.name} has won, their score is #{current_player.lives}"
   end
+
 end
