@@ -1,8 +1,4 @@
-module Helpers
-  def self.random_number
-    [rand(1...20), rand(1...20)]
-  end
-end
+require './Helpers.module.rb'
 
 class Game
   include Helpers
@@ -22,8 +18,7 @@ class Game
   end
 
   def game_loop
-    puts generate_question
-    round_won = false
+    current_question = generate_question
     until game_won
       player_turn = current_player
       player_answer = gets.to_i
@@ -32,6 +27,10 @@ class Game
 
       puts "#{current_player.name}'s answer is #{player_answer}, they are #{is_correct ? "right!" : "totally wrong!"}"
 
+      !is_correct ? current_player.lose_a_life : self.generate_question
+      
+      current_player.lives < 1 && self.game_won = true
+
       self.current_player= other_player
       self.other_player= player_turn
     end
@@ -39,23 +38,3 @@ class Game
     puts "exiting game loop"
   end
 end
-
-class Player
-  attr_accessor :lives, :name
-  def initialize(name)
-    @name = name
-    @lives = 3
-    @is_alive = true
-  end
-
-  def lose_a_life
-    @lives -= 1
-  end
-end
-
-player1 = Player.new("player1")
-player2 = Player.new("player2")
-
-game = Game.new([player1, player2])
-
-game.game_loop
